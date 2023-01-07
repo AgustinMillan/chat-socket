@@ -1,10 +1,19 @@
 const express = require("express");
-const server = express();
+const app = express();
+const SocketIO = require("socket.io")
 
 // configuraciones
-server.set("port", process.env.PORT||3000)
+app.set("port", process.env.PORT||3000)
 
 // iniciar server
-server.listen(server.get("port"), ()=>{
-    console.log(`server en el puerto ${server.get("port")}`)
+const server = app.listen(app.get("port"), ()=>{
+    console.log(`server en el puerto ${app.get("port")}`)
+})
+
+// WebSockets
+
+const io = SocketIO(server)
+
+io.on("connection",()=>{
+    console.log("new user connected")
 })
