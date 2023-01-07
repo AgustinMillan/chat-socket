@@ -29,8 +29,9 @@ io.on("connection",(socket)=>{
 })
 
 // configuraciones
-app.set("port", process.env.PORT||3000)
+const PORT = process.env.PORT
+app.set("port", PORT||3000)
 
 // iniciar server
-server.listen(3000);
-console.log("server started on port 3000");
+server.listen(PORT||3000);
+console.log("server started on port"+PORT||3000);
