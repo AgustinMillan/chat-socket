@@ -1,19 +1,23 @@
+//importaciones
 const express = require("express");
+const morgan = require("morgan");
+const {Server} = require("socket.io");
+const http = require("http")
+const cors = require("cors")
+
+//creacion del servidor
+const SocketServer = Server
 const app = express();
-const SocketIO = require("socket.io")
+const server = http.createServer(app)
+const io = new SocketServer(server)
+
+//morgan y cors
+app.use(cors())
+app.use(morgan("dev"));
 
 // configuraciones
 app.set("port", process.env.PORT||3000)
 
 // iniciar server
-const server = app.listen(app.get("port"), ()=>{
-    console.log(`server en el puerto ${app.get("port")}`)
-})
-
-// WebSockets
-
-const io = SocketIO(server)
-
-io.on("connection",()=>{
-    console.log("new user connected")
-})
+app.listen(3000);
+console.log("server started on port 3000");
