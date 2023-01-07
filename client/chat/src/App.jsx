@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const socket = io("http://localhost:3000");
+const url = import.meta.env.VITE_URL
+const socket = io(url||"http://localhost:3000");
 function App() {
   const [message,setMessage] = useState("")
   const [messages,setMessages] = useState([]);
