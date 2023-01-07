@@ -24,7 +24,7 @@ io.on("connection",(socket)=>{
     console.log(`a user connect, id ${socket.id}`)
     socket.on("messageOfClient", (message)=>{
         console.log(message)
-        socket.broadcast.emit("messageOfServer",message)
+        socket.broadcast.emit("messageOfServer",{from:socket.id,body:message})
     })
 })
 
