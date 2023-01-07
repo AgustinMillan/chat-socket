@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 
 const url = import.meta.env.VITE_URL
-const socket = io(url||"http://localhost:3000");
+const socket = io(url);
 function App() {
   const [message,setMessage] = useState("")
   const [messages,setMessages] = useState([]);
