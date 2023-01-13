@@ -14,7 +14,7 @@ function App() {
   const [messages,setMessages] = useState([]);
   const handleSubmit = (e)=>{
     e.preventDefault();
-    socket.emit("messageOfClient", message)
+    socket.emit("messageOfClient", {from:user.name,message})
     setMessages([{from:"me",body:message},...messages])
     setMessage("");
   }
@@ -27,7 +27,8 @@ function App() {
       <h1>Loading</h1>
     </div>)
   }else if(isAuthenticated){
-return (<div className="App">
+    return (<div className="App">
+  {console.log(user)}
 <Logout/>
 <form onSubmit={e=>handleSubmit(e)}>
   <input type="text" onChange={e=>setMessage(e.target.value)} value={message}/>
@@ -39,14 +40,8 @@ return (<div className="App">
 </div>)
   }else{
     return (<div className="App">
+      <h1>Debes iniciar sesion</h1>
     <Login/>
-    <form onSubmit={e=>handleSubmit(e)}>
-      <input type="text" onChange={e=>setMessage(e.target.value)} value={message}/>
-      <button>Send</button>
-    </form>
-    <div>
-      {messages.map(e=>(<p>{e.from}:{e.body}</p>))}
-    </div>
   </div>)
   }
 }
