@@ -49,7 +49,7 @@ app.set("port", PORT||3000)
 
 // iniciar server
 server.listen(PORT||3000);
-console.log("server started on port"+PORT||3000);
+console.log("server started on port "+PORT||3000);
 
 //modules rutas
 app.use("/user",userR);
