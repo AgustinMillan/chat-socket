@@ -36,10 +36,13 @@ app.use((req, res, next) => {
 
 //conectar socket
 io.on("connection",(socket)=>{
-    console.log(`a user connect, id ${socket.id}`)
+    socket.broadcast.emit("connectNewUserToServer",{body: "Alguien se ha unido",type:1})
+    // socket.on("connectNewUser",(user)=>{
+    //     socket.broadcast.emit("connectNewUserToServer",{from:user.name,type:1,body:" se unio"})
+    // })
     socket.on("messageOfClient", (message)=>{
         console.log(message)
-        socket.broadcast.emit("messageOfServer",{from:message.from,body:message.message})
+        socket.broadcast.emit("messageOfServer",{from:message.from,body:message.message,type:2})
     })
 })
 
