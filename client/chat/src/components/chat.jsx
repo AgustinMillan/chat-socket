@@ -16,7 +16,7 @@ function Chat({ user }) {
 
   useEffect(() => {
     const recibMessage = (messa) => {
-      setMessages([messa, ...messages]);
+      setMessages([...messages, messa]);
     };
 
     socket.on("messageOfOtherClient", recibMessage);
@@ -42,7 +42,7 @@ function Chat({ user }) {
         message: message,
         from: "Me",
       };
-      setMessages([newMessage, ...messages]);
+      setMessages([...messages, newMessage]);
       setMessage("");
 
       axios.post(url + "api/save", {
@@ -110,12 +110,12 @@ function Chat({ user }) {
                           : "bg-light"
                       }`}
                     >
-                      <small className="text-muted">
-                        {e.from === "Me" || e.from === user
-                          ? "Me"
-                          : e.from }
-                        :{e.message}
-                      </small>
+                      <div className="card-body">
+                        <small className="text-muted">
+                          {e.from === "Me" || e.from === user ? "Me" : e.from}:
+                          {e.message}
+                        </small>
+                      </div>
                     </div>
                   </div>
                 );
