@@ -28,7 +28,7 @@ function Chat({ user }) {
 
   if (!startChat) {
     axios
-      .get(url + "/messages")
+      .get(url + "/api/messages")
       .then((res) => res.data.messages)
       .then((res) => setStoredMessages(res))
       .then(setStartChat(true));
@@ -45,7 +45,7 @@ function Chat({ user }) {
       setMessages([newMessage, ...messages]);
       setMessage("");
 
-      axios.post(url + "/save", {
+      axios.post(url + "/api/save", {
         message,
         from: user,
       });
