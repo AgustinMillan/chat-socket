@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const url="mongodb://localhost:27017/chat-socket";
+const url="mongodb+srv://admin:uASwBriMKhQ8rZpf@cluster0.kkpkago.mongodb.net/?retryWrites=true&w=majority"
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);
 mongoose.connect(url).catch(err=>console.log("error :(" , err))
