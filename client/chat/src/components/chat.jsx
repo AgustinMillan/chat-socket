@@ -113,7 +113,7 @@ function Chat({ user }) {
                       <small className="text-muted">
                         {e.from === "Me" || e.from === user
                           ? "Me"
-                          : { e: from }}
+                          : e.from }
                         :{e.message}
                       </small>
                     </div>
