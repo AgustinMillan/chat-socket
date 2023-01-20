@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "./chat.css";
 
-const url = import.meta.env.VITE_URL;
+const url = "https://chat-socket-production-ff17.up.railway.app/";
 const socket = io(url);
 function Chat({ user }) {
   const [message, setMessage] = useState("");
@@ -28,7 +28,7 @@ function Chat({ user }) {
 
   if (!startChat) {
     axios
-      .get(url + "/api/messages")
+      .get(url + "api/messages")
       .then((res) => res.data.messages)
       .then((res) => setStoredMessages(res))
       .then(res=> res?setStartChat(true):null);
@@ -45,7 +45,7 @@ function Chat({ user }) {
       setMessages([newMessage, ...messages]);
       setMessage("");
 
-      axios.post(url + "/api/save", {
+      axios.post(url + "api/save", {
         message,
         from: user,
       });
