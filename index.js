@@ -43,7 +43,7 @@ io.on("connection", socket=>{
 
   socket.on("newMessageClient", (message, name)=>{
     socket.broadcast.emit("messageOfOtherClient", {
-      body: message,
+      message: message,
       from:name
     })
   })
