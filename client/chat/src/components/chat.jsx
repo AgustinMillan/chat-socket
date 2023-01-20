@@ -31,7 +31,7 @@ function Chat({ user }) {
       .get(url + "api/messages")
       .then((res) => res.data.messages)
       .then((res) => setStoredMessages(res))
-      .then(res=> res?setStartChat(true):null);
+      .then(setStartChat(true));
   }
 
   const sendMessage = (e) => {
