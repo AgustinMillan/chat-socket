@@ -16,7 +16,7 @@ function Chat({ user }) {
 
   useEffect(() => {
     const recibMessage = (messa) => {
-      setMessages([{from:messa.from, message:messa.message}, ...messages]);
+      setMessages([messa, ...messages]);
     };
 
     socket.on("messageOfOtherClient", recibMessage);
