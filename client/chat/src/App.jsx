@@ -17,7 +17,7 @@ function App() {
     return (
       <div className="App">
         <Logout />
-        <Chat user={user}/>
+        <Chat user={user.name}/>
       </div>
     );
   } else {

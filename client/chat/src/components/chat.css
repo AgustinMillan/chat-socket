@@ -1,0 +1,5 @@
+#containetChat{
+    height: 80vh;
+    overflow-y: scroll;
+    scroll-margin-block-end:initial;
+}
