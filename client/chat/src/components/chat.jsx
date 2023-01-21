@@ -53,13 +53,17 @@ function Chat({ user }) {
       alert("No puedes enviar mensajes vacios");
     }
   };
+  const llevar = ()=>{
+    const destino = document.getElementById("llevar");
+    destino.scrollIntoView({top:destino})
+  }
   return (
     <div className="container mt-3">
       <div className="card">
         <div className="card-body">
           <h5 className="text-center">CHAT</h5>
           <div className="card mt-3 mb-3" id="containetChat">
-            <div className="card-body">
+            <div className="card-body" style={{position:"relative"}}>
               {storedMessages.length &&
                 storedMessages.map((message, index) => {
                   return (
@@ -120,6 +124,7 @@ function Chat({ user }) {
                   </div>
                 );
               })}
+              <div id="llevar" ref={llevar} style={{position: "absolute", bottom: 0}}></div>
             </div>
             <form onSubmit={(e) => sendMessage(e)}>
               <div className="d-flex">
