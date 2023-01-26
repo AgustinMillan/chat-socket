@@ -6,8 +6,10 @@ import { useEffect } from "react";
 import "./chat.css";
 
 const url = "https://chat-socket-production-ff17.up.railway.app/";
+// const url = "http://localhost:3000/";
+
 const socket = io(url);
-function Chat({ user }) {
+function Chat({ user, image }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -15,14 +17,14 @@ function Chat({ user }) {
   const [startChat, setStartChat] = useState(false);
 
   useEffect(() => {
-    const recibMessage = (messa) => {
-      setMessages([...messages, messa]);
+    const recibMessage = (e) => {
+      setMessages([...messages, e]);
     };
 
-    socket.on("messageOfOtherClient", recibMessage);
+    socket.on("messageOfOtherClient", (e)=>recibMessage(e));
 
     return () => {
-      socket.off("messageOfOtherClient", recibMessage);
+      socket.off("messageOfOtherClient", (e)=>recibMessage(e));
     };
   }, [messages]);
 
@@ -37,10 +39,11 @@ function Chat({ user }) {
   const sendMessage = (e) => {
     e.preventDefault();
     if (message !== "") {
-      socket.emit("newMessageClient", message, user);
+      socket.emit("newMessageClient", {message, user,image});
       const newMessage = {
         message: message,
         from: "Me",
+        image: image,
       };
       setMessages([...messages, newMessage]);
       setMessage("");
@@ -48,22 +51,24 @@ function Chat({ user }) {
       axios.post(url + "api/save", {
         message,
         from: user,
+        imageURL: image,
       });
     } else {
       alert("No puedes enviar mensajes vacios");
     }
   };
-  const llevar = ()=>{
+  const llevar = () => {
     const destino = document.getElementById("llevar");
-    destino.scrollIntoView({top:destino})
-  }
+    destino.scrollIntoView({ top: destino });
+  };
   return (
     <div className="container mt-3">
       <div className="card">
+        {console.log(image)}
         <div className="card-body">
           <h5 className="text-center">CHAT</h5>
           <div className="card mt-3 mb-3" id="containetChat">
-            <div className="card-body" style={{position:"relative"}}>
+            <div className="card-body" style={{ position: "relative" }}>
               {storedMessages.length &&
                 storedMessages.map((message, index) => {
                   return (
@@ -75,6 +80,17 @@ function Chat({ user }) {
                           : "justify-content-start"
                       }`}
                     >
+                      {message.from !== user && message.from !== "Me"? (
+                        <img
+                          className="imgPerfil"
+                          src={
+                            message.imageURL
+                              ? message.imageURL
+                              : "http://cdn.onlinewebfonts.com/svg/img_264570.png"
+                          }
+                          alt={`${index}`}
+                        />
+                      ) : null}
                       <div
                         className={`card mb-3 border-1 ${
                           message.from === "Me" || message.from === user
@@ -91,6 +107,13 @@ function Chat({ user }) {
                           </small>
                         </div>
                       </div>
+                      {message.from === "Me" || message.from === user ? (
+                        <img
+                          className="imgPerfil"
+                          src={image.length ? image : null}
+                          alt="imagePerfil"
+                        />
+                      ) : null}
                     </div>
                   );
                 })}
@@ -107,6 +130,17 @@ function Chat({ user }) {
                         : "justify-content-start"
                     }`}
                   >
+                    {e.from !== user && e.from !== "Me" ? 
+                      <img
+                        className="imgPerfil"
+                        src={
+                          e.imageURL
+                            ? e.imageURL
+                            : "http://cdn.onlinewebfonts.com/svg/img_264570.png"
+                        }
+                        alt={`${index}`}
+                      />
+                     : null}
                     <div
                       className={`card mb-3 border-1 ${
                         e.from === "Me" || e.from === user
@@ -121,10 +155,21 @@ function Chat({ user }) {
                         </small>
                       </div>
                     </div>
+                    {e.from === "Me" || e.from === user ? (
+                        <img
+                          className="imgPerfil"
+                          src={image}
+                          alt={`${index}P`}
+                        />
+                      ) : null}
                   </div>
                 );
               })}
-              <div id="llevar" ref={llevar} style={{position: "absolute", bottom: 0}}></div>
+              <div
+                id="llevar"
+                ref={llevar}
+                style={{ position: "absolute", bottom: 0 }}
+              ></div>
             </div>
             <form onSubmit={(e) => sendMessage(e)}>
               <div className="d-flex">
@@ -152,5 +197,4 @@ function Chat({ user }) {
     </div>
   );
 }
-
 export default Chat;

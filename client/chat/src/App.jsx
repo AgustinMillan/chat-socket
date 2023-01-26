@@ -12,12 +12,13 @@ function App() {
       <div className="App">
         <h1>Loading</h1>
       </div>
+    
     );
   } else if (isAuthenticated) {
     return (
       <div className="App">
         <Logout />
-        <Chat user={user.name}/>
+        <Chat user={user.name} image={user.picture}/>
       </div>
     );
   } else {

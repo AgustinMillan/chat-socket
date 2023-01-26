@@ -8,6 +8,7 @@ var controller = {
       let message = new Message();
       message.message = params.message;
       message.from = params.from;
+      message.imageURL = params.imageURL;
 
       const resM = await message.save();
       if (!resM) throw new Error({ message: "No se guardo el mensaje" });

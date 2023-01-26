@@ -41,11 +41,14 @@ app.use("/api", router);
 io.on("connection", socket=>{
   console.log("Hay una nueva conexion" , socket.id);
 
-  socket.on("newMessageClient", (message, name)=>{
-    socket.broadcast.emit("messageOfOtherClient", {
-      message: message,
-      from:name
-    })
+  socket.on("newMessageClient", ({message, user,image})=>{
+    const emision= {
+      message,
+      from:user,
+      imageURL:image
+    }
+    socket.broadcast.emit("messageOfOtherClient", emision
+    )
   })
 })
 //conecta a la db
