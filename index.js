@@ -6,7 +6,7 @@ const http = require("http");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const router = require("./routes/message");
-const Message = require("./database/models/Message")
+const routerUser = require("./routes/user")
 
 //creacion del servidor
 const SocketServer = Server;
@@ -36,11 +36,27 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/api", router);
+app.use("/user", routerUser)
+
+//conecta a la db
+require("./database/db");
 
 //conectar socket
-io.on("connection", socket=>{
-  console.log("Hay una nueva conexion" , socket.id);
+const url="http://localhost:3000/"
+io.on("connection", async(socket)=>{
+  socket.on("connectStart", (data)=>{
+    socket.id = data.message[0].email
+    console.log(socket.id)
+  })
 
+  socket.on("newMessagePrivateClient", ({message, user, image, destiny})=>{
+    const emision = {
+      message,
+      from: user,
+      imageURL:image
+    }
+    socket.to(destiny).emit("sendMessagePrivateClient", emision)
+  })
   socket.on("newMessageClient", ({message, user,image})=>{
     const emision= {
       message,
@@ -51,8 +67,6 @@ io.on("connection", socket=>{
     )
   })
 })
-//conecta a la db
-require("./database/db");
 
 // configuraciones
 const PORT = process.env.PORT;
@@ -62,6 +76,14 @@ app.set("port", PORT || 3000);
 server.listen(PORT || 3000);
 console.log("server started on port " + PORT || 3000);
 
+const Message = require("./database/models/Message")
+
 cron.schedule("0 0 * * *", ()=>{
-  Message.deleteMany({});
+  Message.deleteMany({}, (error) => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log("All documents deleted!");
+    }
+});
 })

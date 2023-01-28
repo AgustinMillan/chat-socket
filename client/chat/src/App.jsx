@@ -3,10 +3,26 @@ import Login from "./components/login";
 import Logout from "./components/logout";
 import Chat from "./components/chat";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
+import axios from "axios";
+import io from "socket.io-client";
+import ChatsList from "./components/chatsList";
 
+const url = "http://localhost:3000/";
+// const url = "https://chat-socket-production-ff17.up.railway.app/";
+
+const socket = io(url);
 function App() {
   const { user,isLoading, isAuthenticated } = useAuth0();
-
+  const conecctionStart = async()=>{
+    let resOfAxios =  await axios.get(`${url}user?email=${user.email}&name=${user.name}`);
+    socket.emit("connectStart", resOfAxios.data);
+  }
+  useEffect(()=>{
+    if(user){
+      conecctionStart()
+    }
+  },[user])
   if (isLoading) {
     return (
       <div className="App">
@@ -18,7 +34,10 @@ function App() {
     return (
       <div className="App">
         <Logout />
-        <Chat user={user.name} image={user.picture}/>
+        <div className="containerChatsAndChat">
+          <ChatsList/>
+        <Chat user={user.name} image={user.picture} socket={socket} url={url}/>
+        </div>
       </div>
     );
   } else {

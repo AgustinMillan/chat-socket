@@ -1,15 +1,11 @@
 import React from "react";
-import io from "socket.io-client";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import "./chat.css";
 
-const url = "https://chat-socket-production-ff17.up.railway.app/";
-// const url = "http://localhost:3000/";
 
-const socket = io(url);
-function Chat({ user, image }) {
+function Chat({ user, image, socket, url}) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -64,7 +60,6 @@ function Chat({ user, image }) {
   return (
     <div className="container mt-3">
       <div className="card">
-        {console.log(image)}
         <div className="card-body">
           <h5 className="text-center">CHAT</h5>
           <div className="card mt-3 mb-3" id="containetChat">

@@ -1,0 +1,9 @@
+.containerGRNLChatList{
+    background-color: rgb(255, 255, 255);
+    height: max-content, min-content;
+    width: 35vh;
+    border-radius: 12px;
+    border: 1px;
+    border-style: solid;
+    border-color: rgba(46, 46, 46, 0.289);
+}
